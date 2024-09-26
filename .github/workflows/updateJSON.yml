@@ -11,9 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the repository
+    # Step 1: Checkout the repository with full write permissions
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        persist-credentials: false  # Disable the default credentials
+        fetch-depth: 0              # Fetch all history for all branches
 
     # Step 2: Set up Node.js with version 16
     - name: Set up Node.js
@@ -37,14 +40,12 @@ jobs:
         echo "{\"requested_at\": \"$REQUESTED_AT\", \"random_timestamp\": \"$RANDOM_TIMESTAMP\"}" > data.json
 
     # Step 4: Commit and push the updated JSON file
-    - name: Commit changes
+    - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add data.json
         git commit -m "Update JSON file with Unix timestamps [skip ci]" || echo "No changes to commit"
-
-    - name: Push changes
-      uses: ad-m/github-push-action@v1
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
