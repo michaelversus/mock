@@ -9,13 +9,19 @@ on:
 jobs:
   update-json:
     runs-on: ubuntu-latest
-    
+
     steps:
     # Step 1: Checkout the repository
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # Step 2: Generate new JSON content with Unix timestamps
+    # Step 2: Set up Node.js with version 16
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    # Step 3: Generate new JSON content with Unix timestamps
     - name: Update JSON file
       run: |
         # Current Unix timestamp (requested_at)
@@ -30,11 +36,15 @@ jobs:
         # Create a JSON object with both Unix timestamps
         echo "{\"requested_at\": \"$REQUESTED_AT\", \"random_timestamp\": \"$RANDOM_TIMESTAMP\"}" > data.json
 
-    # Step 3: Commit and push the updated JSON file
+    # Step 4: Commit and push the updated JSON file
     - name: Commit changes
       run: |
-        git config --global michaelversus 'github-actions[bot]'
-        git config --global mic@gmail.com 'github-actions[bot]@users.noreply.github.com'
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add data.json
         git commit -m "Update JSON file with Unix timestamps [skip ci]" || echo "No changes to commit"
-        git push
+
+    - name: Push changes
+      uses: ad-m/github-push-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
