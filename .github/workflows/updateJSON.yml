@@ -33,8 +33,8 @@ jobs:
     # Step 3: Commit and push the updated JSON file
     - name: Commit changes
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git config --global michaelversus 'github-actions[bot]'
+        git config --global mic@gmail.com 'github-actions[bot]@users.noreply.github.com'
         git add data.json
         git commit -m "Update JSON file with Unix timestamps [skip ci]" || echo "No changes to commit"
         git push
