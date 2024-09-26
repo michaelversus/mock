@@ -36,7 +36,7 @@ jobs:
         RANDOM_TIMESTAMP=$(( REQUESTED_AT + RANDOM_OFFSET ))
 
         # Create a JSON object with both Unix timestamps
-        echo "{\"requested_at\": \"$REQUESTED_AT\", \"random_timestamp\": \"$RANDOM_TIMESTAMP\"}" > data.json
+        echo "{\"requested_at\": \"$REQUESTED_AT\", \"random_timestamp\": \"$RANDOM_TIMESTAMP\"}" > sports.json
 
     # Step 4: Commit and push the updated JSON file
     - name: Commit and push changes
