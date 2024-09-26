@@ -11,12 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the repository with full write permissions
+    # Step 1: Checkout the repository
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        persist-credentials: false  # Disable the default credentials
-        fetch-depth: 0              # Fetch all history for all branches
+        fetch-depth: 0  # Fetch all history for all branches
 
     # Step 2: Set up Node.js with version 16
     - name: Set up Node.js
@@ -46,6 +45,6 @@ jobs:
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add data.json
         git commit -m "Update JSON file with Unix timestamps [skip ci]" || echo "No changes to commit"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+        # Use GITHUB_TOKEN for authentication
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
